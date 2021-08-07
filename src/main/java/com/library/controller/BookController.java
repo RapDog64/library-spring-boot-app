@@ -1,12 +1,13 @@
 package com.library.controller;
 
-
 import com.library.domain.Author;
 import com.library.domain.Book;
 import com.library.domain.ErrorMessage;
 import com.library.domain.ErrorMessages;
 import com.library.service.AuthorService;
 import com.library.service.BookService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("api/v1/books")
+@Api(value = "Book resource Endpoints")
 public class BookController {
 
     private final BookService bookService;
@@ -29,6 +30,7 @@ public class BookController {
         this.authorService = authorService;
     }
 
+    @ApiOperation("Add a new book")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Book> addBook(@RequestBody Book book) {
 
@@ -42,6 +44,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/authorId/{id}/bookName/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation("receive the book by the author id and the name of the book")
     public ResponseEntity receiveBookByAuthorIdAndBook(@PathVariable("id") Integer id, @PathVariable("name") String name) {
         Author authorById = this.authorService.getAuthorById(id);
 
@@ -61,6 +64,7 @@ public class BookController {
     }
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation("receive all the current books")
     public ResponseEntity<List<Book>> receiveAllBooks() {
         List<Book> allOfCurrentBooks = this.bookService.getAllBooks();
 
@@ -72,6 +76,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/authorId/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation("receive all the books by author id")
     public ResponseEntity receiveBooksByAuthorId(@PathVariable("id") Integer id) {
         Author authorById = this.authorService.getAuthorById(id);
 
